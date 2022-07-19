@@ -1,77 +1,79 @@
-const Workout = require("../models/workoutModel");
 const mongoose = require("mongoose");
+const Workout = require("../models/workoutModel");
 
-//GET all
+// @desc    Get all workouts
+// @route   GET /api/workouts
+// @access  Private
 const getAllWorkouts = async (req, res) => {
+  const retrievedWorkouts = await Workout.find({}).sort({ createdAt: -1 });
+  res.status(200).json(retrievedWorkouts);
+};
+
+// @desc    Get a single workout
+// @route   GET /api/workouts/:id
+// @access  Private
+const getWorkout = async (req, res) => {
+  const { id } = req.params;
+
+  validIdCheck(id, res);
+  const retrievedWorkout = await Workout.findById(id);
+  returnStatus(retrievedWorkout, res);
+};
+
+// @desc    Post a workout
+// @route   POST /api/workouts
+// @access  Private
+const postWorkout = async (req, res) => {
   try {
-    const workout = await Workout.find({}).sort({ createdAt: -1 });
-    res.status(200).json(workout);
+    const body = req.body;
+    const obj = new Workout(body);
+    const postedWorkout = await Workout.create(obj);
+    res.status(200).json(postedWorkout);
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
 };
 
-//GET single
-const getWorkout = async (req, res) => {
+// @desc    Update a workout
+// @route   PUT /api/workouts/:id
+// @access  Private
+const updateWorkout = async (req, res) => {
   const { id } = req.params;
+  const body = req.body;
 
-  //return error if id is an invalid type
-  checkForValidId(id);
-
-  const workout = await Workout.findById(id);
-
-  //return workout status
-  returnStatus(workout, res);
+  validIdCheck(id, res);
+  const updatedWorkout = await Workout.findByIdAndUpdate(id, body);
+  returnStatus(updatedWorkout, res);
 };
 
-//POST
-const postWorkout = async (req, res) => {
-  const { exercise, reps, weight } = req.body;
-
-  const workout = await Workout.create({ exercise, reps, weight }); //use workout model to create new document
-
-  returnStatus(workout, res);
-};
-
-//DELETE
+// @desc    Delete a workout
+// @route   DELETE /api/workouts/:id
+// @access  Private
 const deleteWorkout = async (req, res) => {
   const { id } = req.params;
 
-  checkForValidId(id);
-
-  const workout = await Workout.findOneAndDelete({ _id: id });
-
-  returnStatus(workout, res);
-};
-
-//UPDATE
-const updateWorkout = async (req, res) => {
-  const { id } = req.params;
-
-  checkForValidId(id);
-
-  const workout = await Workout.findOneAndUpdate({ _id: id }, { ...req.body });
-
-  returnStatus(workout, res);
+  validIdCheck(id, res);
+  const deletedWorkout = await Workout.findByIdAndDelete(id);
+  returnStatus(deletedWorkout, res);
 };
 
 //helper functions
-const checkForValidId = (id) => {
+const validIdCheck = (id, res) => {
   if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res.status(404).json({ error: "Workout not found" });
+    return res.status(404).json({ error: "Invalid object id." });
   }
 };
 
 const returnStatus = (workout, res) => {
-  return !workout
-    ? res.status(400).json({ error: "Workout not found." })
-    : res.status(200).json(workout);
+  return workout
+    ? res.status(200).json(workout)
+    : res.status(404).json({ error: "Workout not found." });
 };
 
 module.exports = {
-  getWorkout,
   getAllWorkouts,
+  getWorkout,
   postWorkout,
-  deleteWorkout,
   updateWorkout,
+  deleteWorkout,
 };
