@@ -1,6 +1,14 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { toast } from "react-toastify";
+import { reset, login } from "../features/auth/authSlice";
+import authService from "../features/auth/authService";
 
 const Login = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   //@type HOOK: useState
   //@desc Holds the form login date in an object.
   const [logInFormData, setLogInFormData] = useState({
@@ -10,6 +18,24 @@ const Login = () => {
 
   //Destructure to get current state values from hook
   const { email, password } = logInFormData;
+
+  //Bring in state from store
+  const { user, isLoading, isError, isSuccess, message } = useSelector(
+    (state) => state.auth
+  );
+
+  //@type HOOK: useEffect
+  //@desc Handles side effects and rerenders when state changes
+  useEffect(() => {
+    if (isError) {
+      toast.error(message);
+    }
+    if (isSuccess || user) {
+      navigate("/");
+    }
+
+    dispatch(reset());
+  }, [user, isError, isSuccess, message, navigate, dispatch]);
 
   //@type FUNCTION: handleSubmit
   //@desc Handles the functionality for when a user logs into the form.
@@ -22,7 +48,7 @@ const Login = () => {
       password,
     };
 
-    //Will dispatch the userLogInData later with redux
+    dispatch(login(userLogInData));
   };
 
   //@type FUNCTION: handleChange

@@ -6,27 +6,32 @@ const user = JSON.parse(localStorage.getItem("user"));
 
 //@type THUNK: Register
 //@desc calls the authService, passes in user, and either returns the payload or rejects with an error
-const register = createAsyncThunk("auth/register", async (user, thunkAPI) => {
-  try {
-    return await authService.register(user);
-  } catch (error) {
-    return thunkAPI.rejectWithValue(error.message);
+export const register = createAsyncThunk(
+  "auth/register",
+  async (user, thunkAPI) => {
+    try {
+      return await authService.register(user);
+    } catch (error) {
+      const message = error.response.data;
+      return thunkAPI.rejectWithValue(message.error);
+    }
   }
-});
+);
 
 //@type THUNK: Login
 //@desc calls the authService, passes in user, and either returns the payload or rejects with an error
-const login = createAsyncThunk("auth/login", async (user, thunkAPI) => {
+export const login = createAsyncThunk("auth/login", async (user, thunkAPI) => {
   try {
     return await authService.login(user);
   } catch (error) {
-    return thunkAPI.rejectWithValue(error.message);
+    const message = error.response.data;
+    return thunkAPI.rejectWithValue(message.error);
   }
 });
 
 //@type THUNK: Logout
 //@desc calls the authService, passes in user, and awaits local storage item removal
-const logout = createAsyncThunk("auth/logut", async (user, thunkAPI) => {
+export const logout = createAsyncThunk("auth/logut", async (user, thunkAPI) => {
   await authService.logout(user);
 });
 
@@ -62,9 +67,8 @@ export const authSlice = createSlice({
       })
       .addCase(register.rejected, (state, action) => {
         state.user = null;
-        state.isLoading = false;
-        state.isSuccess = false;
         state.isError = true;
+        state.message = action.payload;
       })
       .addCase(logout.fulfilled, (state) => {
         state.user = null;
@@ -78,7 +82,6 @@ export const authSlice = createSlice({
         state.user = action.payload;
       })
       .addCase(login.rejected, (state, action) => {
-        state.isLoading = false;
         state.isError = true;
         state.message = action.payload;
         state.user = null;

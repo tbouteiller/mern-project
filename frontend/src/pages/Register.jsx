@@ -1,8 +1,15 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { toast } from "react-toastify";
+import { reset, register } from "../features/auth/authSlice";
 
 const Register = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   //@type HOOK: useState
-  //@desc Holds the form registration date in an object.
+  //@desc Holds the form registration data in an object.
   const [registerFormData, setRegisterFormData] = useState({
     name: "",
     email: "",
@@ -13,10 +20,35 @@ const Register = () => {
   //Destructure to get current state values from hook
   const { name, email, password, confirmPassword } = registerFormData;
 
+  //Bring in state from store
+  const { user, isLoading, isError, isSuccess, message } = useSelector(
+    (state) => state.auth
+  );
+
+  //@type HOOK: useEffect
+  //@desc Handles side effects and rerenders when state changes
+  useEffect(() => {
+    if (isError) {
+      toast.error(message);
+    }
+    if (isSuccess || user) {
+      navigate("/");
+    }
+
+    dispatch(reset());
+  }, [user, isError, isSuccess, message, navigate, dispatch]);
+
   //@type FUNCTION: handleSubmit
   //@desc Handles the functionality for when a user submits the form.
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    if (password !== confirmPassword) {
+      toast.error("Passwords don't match.");
+    } else {
+      const userData = { name, email, password };
+      dispatch(register(userData));
+    }
   };
 
   //@type FUNCTION: handleChange
@@ -59,7 +91,7 @@ const Register = () => {
             onChange={handleChange}
             required
           />
-          <label htmlFor="confirmPassword">Comfirm password</label>
+          <label htmlFor="confirmPassword">Confirm password</label>
           <input
             type="password"
             name="confirmPassword"

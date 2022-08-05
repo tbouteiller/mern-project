@@ -28,7 +28,7 @@ const login = async (userData) => {
   return response.data;
 };
 
-//@type LOGIN service function
+//@type LOGOUT service function
 //@desc Removes user from local storage
 const logout = async () => {
   localStorage.removeItem("user");

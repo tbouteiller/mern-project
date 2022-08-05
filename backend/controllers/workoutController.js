@@ -57,15 +57,13 @@ const updateWorkout = async (req, res) => {
     return res.status(400).json({ error: "Workout not found." });
   }
 
-  //find and verify user
-  const user = await User.findById(req.user.id);
-
-  if (!user) {
+  //check for user
+  if (!req.user) {
     return res.status(400).json({ error: "User not found." });
   }
 
   //check if the logged in user matches the user attached to the specific workout
-  if (user.id !== workout.user.toString()) {
+  if (req.user.id !== workout.user.toString()) {
     return res.status(401).json({ error: "User not authorized." });
   }
 
@@ -87,14 +85,13 @@ const deleteWorkout = async (req, res) => {
     return res.status(400).json({ error: "Workout not found" });
   }
 
-  // find and verify user
-  const user = await User.findById(req.user.id);
-  if (!user) {
+  // find user
+  if (!req.user) {
     return res.status(400).json({ error: "User not found." });
   }
 
   //check if the logged in user matches the user attached to the specific workout
-  if (user.id !== workout.user.toString()) {
+  if (req.user.id !== workout.user.toString()) {
     return res.status(401).json({ error: "User not authorized." });
   }
 
