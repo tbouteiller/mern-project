@@ -7,28 +7,40 @@ const Nav = () => {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
 
+  //@type FUNCTION: handleLogout
+  //@desc Handles the functionality for when a user logs out
   const handleLogout = () => {
     dispatch(logout());
     dispatch(reset());
     navigate("/");
   };
+
   return (
     <header>
       <nav>
-        <Link to="/">Home</Link>
-        <ul>
-          {user ? (
-            <button onClick={handleLogout}>Logout</button>
-          ) : (
-            <li>
-              <Link to="/login">Login</Link>
-            </li>
-          )}
-
-          <li>
-            <Link to="/register">Register</Link>
-          </li>
-        </ul>
+        <div>
+          <Link to="/">Home</Link>
+          {user && <Link to="/createworkout">Create Workout</Link>}
+        </div>
+        <div>
+          <ul>
+            {user ? (
+              <>
+                <p className="greet-user">Hi, {user && user.name}</p>
+                <button onClick={handleLogout}>Logout</button>
+              </>
+            ) : (
+              <>
+                <li>
+                  <Link to="/login">Login</Link>
+                </li>
+                <li>
+                  <Link to="/register">Register</Link>
+                </li>
+              </>
+            )}
+          </ul>
+        </div>
       </nav>
     </header>
   );
