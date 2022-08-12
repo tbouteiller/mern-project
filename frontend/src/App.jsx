@@ -6,6 +6,8 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Nav from "./components/Nav";
 import NotFound from "./pages/NotFound";
+import CreateWorkout from "./pages/CreateWorkout";
+import SingleWorkout from "./pages/SingleWorkout";
 
 function App() {
   return (
@@ -16,9 +18,11 @@ function App() {
           <div className="container">
             <Routes>
               <Route path="/" element={<Home />} />
+              <Route path="/createworkout" element={<CreateWorkout />} />
+              <Route path="/workout/:id" element={<SingleWorkout />} />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
-              <Route path="/*" element={<NotFound />} />
+              <Route path="*" element={<NotFound />} />
             </Routes>
           </div>
         </div>

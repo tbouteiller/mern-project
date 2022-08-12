@@ -12,16 +12,24 @@ code {
     monospace;
 }
 
+/*NAV STYLE*/
 nav {
   padding: 20px;
   background-color: #f9fafb;
   display: flex;
   justify-content: space-between;
+  align-items: center;
   border-bottom: 1px solid #cbd5e1;
 }
 
-ul {
+nav div > a:first-child {
+  padding-right: 20px;
+}
+
+nav ul {
   display: flex;
+  justify-content: center;
+  align-items: center;
   list-style: none;
   margin: 0;
 }
@@ -30,21 +38,35 @@ ul > li:first-child {
   padding-right: 20px;
 }
 
-a {
+nav a {
   text-decoration: transparent;
 }
 
-a:hover {
+nav a:visited {
+  text-decoration: none;
+  color: black;
+}
+
+nav a:hover {
   text-decoration: underline;
   transition: 0.3s ease-out;
 }
 
+.greet-user {
+  margin: 0;
+  padding-right: 1.5rem;
+  font-weight: bold;
+}
+
+/*MAIN CONTAINER*/
 .container {
   display: flex;
   justify-content: center;
   align-items: center;
   margin: 2rem 4rem;
 }
+
+/*FORM*/
 
 form {
   background-color: #f8fafc;
@@ -66,4 +88,89 @@ form label {
 
 form button {
   margin: 1rem;
+}
+
+form h2 {
+  text-align: center;
+}
+
+/*BUTTONS*/
+
+button {
+  border: 2px solid #404040;
+  border-radius: 4px;
+  background-color: #f8fafc;
+  padding: 5px 10px;
+  transition: 0.3s ease-out;
+}
+
+button:hover,
+button:focus {
+  cursor: pointer;
+  background-color: #404040;
+  color: white;
+}
+
+.form-buttons {
+  display: flex;
+}
+
+/*WORKOUTS*/
+.workout {
+  border: 1px solid #cbd5e1;
+  margin-bottom: 12px;
+  width: 500px;
+  background-color: #f8fafc;
+}
+
+.workout p {
+  margin: 0;
+  padding: 0;
+}
+
+.workout button {
+  margin: 5px;
+}
+
+.top-card > p:first-of-type {
+  text-align: right;
+  padding: 3px;
+}
+
+.top-card {
+  background-color: #f9fafb;
+  border-bottom: 1px solid #c2ccd7;
+}
+
+.bottom-card {
+  padding: 5px;
+}
+.bottom-card p:first-of-type {
+  font-weight: 600;
+}
+
+/* SPINNER */
+.lds-dual-ring {
+  display: inline-block;
+  width: 80px;
+  height: 80px;
+}
+.lds-dual-ring:after {
+  content: " ";
+  display: block;
+  width: 64px;
+  height: 64px;
+  margin: 8px;
+  border-radius: 50%;
+  border: 6px solid black;
+  border-color: black transparent black transparent;
+  animation: lds-dual-ring 1.2s linear infinite;
+}
+@keyframes lds-dual-ring {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
