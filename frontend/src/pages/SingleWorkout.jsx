@@ -1,8 +1,7 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { getSingleWorkout, reset } from "../features/workouts/workoutSlice";
-import { useParams } from "react-router-dom";
+import { reset } from "../features/workouts/workoutSlice";
 import Spinner from "../components/Spinner";
 import BarChart from "../components/BarChart";
 
@@ -11,28 +10,24 @@ const SingleWorkout = () => {
   const dispatch = useDispatch();
 
   const { user } = useSelector((state) => state.auth);
-  const { workouts, workout, isLoading, isError, message } = useSelector(
+  const { workout, isLoading, isError, message } = useSelector(
     (state) => state.workout
   );
-  const { id } = useParams();
 
   //@type HOOK: useEffect
-  //@desc Handles side effects and rerenders when state changes - Renavigates if user isn't valid, dispatches a single workout.
+  //@desc Handles side effects and rerenders when state changes - Renavigates if user isn't valid
   useEffect(() => {
     if (isError) {
       console.log(message);
-      return;
     }
     if (!user) {
       navigate("/login");
     }
 
-    dispatch(getSingleWorkout(id));
-
     return () => {
       dispatch(reset());
     };
-  }, [user, id, navigate, isError, message, dispatch]);
+  }, [user, navigate, isError, message, dispatch]);
 
   return (
     <>
