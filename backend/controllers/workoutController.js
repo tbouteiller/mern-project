@@ -18,14 +18,20 @@ const getAllWorkouts = async (req, res) => {
 const getWorkout = async (req, res) => {
   const { id } = req.params;
 
-  validIdCheck(id, res);
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(404).json({ error: "Invalid workout id." });
+  }
 
   const retrievedWorkout = await Workout.findOne({
     _id: id,
     user: req.user.id,
   });
 
-  returnStatus(retrievedWorkout, res);
+  if (!retrievedWorkout) {
+    return res.status(400).json({ error: "Workout not found." });
+  } else {
+    return res.status(200).json(retrievedWorkout);
+  }
 };
 
 // @desc    Post a workout
@@ -104,12 +110,6 @@ const validIdCheck = (id, res) => {
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return res.status(404).json({ error: "Invalid object id." });
   }
-};
-
-const returnStatus = (workout, res) => {
-  return workout
-    ? res.status(200).json(workout)
-    : res.status(404).json({ error: "Workout not found." });
 };
 
 module.exports = {
