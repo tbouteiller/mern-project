@@ -19,6 +19,7 @@ const Home = () => {
     if (isError) {
       console.log(message);
     }
+
     if (!user) {
       navigate("/login");
     }
@@ -38,12 +39,8 @@ const Home = () => {
         <div>
           <h1>Workouts</h1>
           <div>
-            {workouts.map((workout, index) => {
-              return (
-                <div key={workout._id}>
-                  <Workout workout={workout} index={index} />
-                </div>
-              );
+            {workouts.map((workout) => {
+              return <Workout key={workout._id} workout={workout} />;
             })}
           </div>
         </div>

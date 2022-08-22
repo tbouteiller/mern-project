@@ -12,6 +12,15 @@ code {
     monospace;
 }
 
+/* LINKS */
+a {
+  text-decoration: transparent;
+}
+a:visited {
+  text-decoration: none;
+  color: black;
+}
+
 /*NAV STYLE*/
 nav {
   padding: 20px;
@@ -36,15 +45,6 @@ nav ul {
 
 ul > li:first-child {
   padding-right: 20px;
-}
-
-nav a {
-  text-decoration: transparent;
-}
-
-nav a:visited {
-  text-decoration: none;
-  color: black;
 }
 
 nav a:hover {
@@ -95,7 +95,6 @@ form h2 {
 }
 
 /*BUTTONS*/
-
 button {
   border: 2px solid #404040;
   border-radius: 4px;
@@ -119,34 +118,58 @@ button:focus {
 .workout {
   border: 1px solid #cbd5e1;
   margin-bottom: 12px;
-  width: 500px;
   background-color: #f8fafc;
-}
-
-.workout p {
-  margin: 0;
-  padding: 0;
 }
 
 .workout button {
   margin: 5px;
 }
 
-.top-card > p:first-of-type {
-  text-align: right;
+.top-card {
+  background-color: #f1f5f9;
+  border-bottom: 1px solid #c2ccd7;
+  text-align: center;
   padding: 3px;
 }
 
-.top-card {
-  background-color: #f9fafb;
-  border-bottom: 1px solid #c2ccd7;
+.bottom-card {
+  padding: 0 10px 10px 10px;
 }
 
-.bottom-card {
-  padding: 5px;
+/* WORKOUT TABLE*/
+table {
+  border: 1px solid black;
+  border-collapse: collapse;
 }
-.bottom-card p:first-of-type {
+
+table td,
+th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+th {
+  width: 100px;
+}
+
+tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+tr:hover {
+  background-color: #ddd;
+}
+
+th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  font-weight: 500;
+  background-color: #f0fdf4;
+}
+
+caption {
   font-weight: 600;
+  margin: 5px 0;
 }
 
 /* SPINNER */

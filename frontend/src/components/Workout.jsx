@@ -4,7 +4,7 @@ import { deleteWorkout } from "../features/workouts/workoutSlice";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
 
-const Workout = ({ workout, index }) => {
+const Workout = ({ workout }) => {
   const dispatch = useDispatch();
 
   //@type FUNCTION: removeWorkout
@@ -17,30 +17,41 @@ const Workout = ({ workout, index }) => {
   };
 
   return (
-    <div className="workout">
+    <div key={workout._id} className="workout">
       <div className="top-card">
         <p>{new Date(workout.createdAt).toDateString()}</p>
       </div>
-      {workout.exercise.map((exercise, i) => {
-        return (
-          <div className="bottom-card" key={exercise._id}>
-            <p>{exercise.title}</p>
-            <div>
-              {exercise.set.map((set, index) => {
-                return (
-                  <div key={set._id}>
-                    <span>
-                      Set {index + 1} - Reps: {set.reps}, Weight: {set.weight}
-                    </span>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        );
-      })}
+      <div className="bottom-card">
+        {workout.exercise.map((exercise, i) => {
+          return (
+            <table key={exercise._id}>
+              <caption>{exercise.title}</caption>
+              <thead>
+                <tr key={i}>
+                  <td></td>
+                  <th scope="col">Reps</th>
+                  <th scope="col">Weight</th>
+                </tr>
+              </thead>
+              <tbody>
+                {exercise.set.map((set, index) => {
+                  return (
+                    <>
+                      <tr key={index}>
+                        <th scope="row">Set {index + 1}</th>
+                        <td>{set.reps}</td>
+                        <td>{set.weight}</td>
+                      </tr>
+                    </>
+                  );
+                })}
+              </tbody>
+            </table>
+          );
+        })}
+      </div>
       <button onClick={removeWorkout}>Delete</button>
-      <Link to={`/workout/${workout._id}`}>
+      <Link tabIndex={-1} to={`/workout/${workout._id}`}>
         <button>Details</button>
       </Link>
     </div>
