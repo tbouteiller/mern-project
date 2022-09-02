@@ -8,7 +8,7 @@ import Nav from "./components/Nav";
 import NotFound from "./pages/NotFound";
 import CreateWorkout from "./pages/CreateWorkout";
 import SingleWorkout from "./pages/SingleWorkout";
-import Guard from "./components/Guard";
+
 
 function App() {
   return (
@@ -20,7 +20,7 @@ function App() {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/createworkout" element={<CreateWorkout />} />
-              <Route path="/workout/:id" element={<Guard />} />
+              <Route path="/workout/:id" element={<SingleWorkout />} />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
               <Route path="*" element={<NotFound />} />

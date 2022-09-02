@@ -9,17 +9,13 @@ const Home = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
-  const { workouts, isLoading, isError, message } = useSelector(
+  const { workouts, isLoading } = useSelector(
     (state) => state.workout
   );
 
   //@type HOOK: useEffect
   //@desc Handles side effects and rerenders when state changes - Renavigates if user isn't valid, dispatches all workouts.
   useEffect(() => {
-    if (isError) {
-      console.log(message);
-    }
-
     if (!user) {
       navigate("/login");
     }
@@ -29,7 +25,7 @@ const Home = () => {
     return () => {
       dispatch(reset());
     };
-  }, [user, navigate, isError, message, dispatch]);
+  }, [user, navigate, dispatch]);
 
   return (
     <section>
