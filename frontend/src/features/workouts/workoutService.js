@@ -53,9 +53,9 @@ const getSingleWorkout = async (id, token) => {
       Authorization: `Bearer ${token}`,
     },
   };
-
+ 
   const response = await axios.get(API_URL + id, config);
-
+  
   return response.data;
 };
 

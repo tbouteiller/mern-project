@@ -30,7 +30,7 @@ const login = async (userData) => {
 
 //@type LOGOUT service function
 //@desc Removes user from local storage
-const logout = async () => {
+const logout = () => {
   localStorage.removeItem("user");
 };
 
